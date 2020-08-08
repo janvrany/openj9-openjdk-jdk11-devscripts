@@ -1,0 +1,5 @@
+freemarker*
+openj9-openjdk-jdk11
+*.trc
+*.txt
+*.dmp

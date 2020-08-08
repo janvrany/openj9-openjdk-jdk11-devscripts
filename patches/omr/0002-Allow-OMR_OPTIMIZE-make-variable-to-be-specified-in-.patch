@@ -1,0 +1,27 @@
+From 2ed09cb39d0b51efb227f76bedd02b527cb0dc98 Mon Sep 17 00:00:00 2001
+From: Jan Vrany <jan.vrany@fit.cvut.cz>
+Date: Mon, 3 Aug 2020 07:48:03 +0000
+Subject: [PATCH] Allow OMR_OPTIMIZE make variable to be specified in
+ environment
+
+Signed-off-by: Jan Vrany <jan.vrany@fit.cvut.cz>
+---
+ omrmakefiles/configure.mk.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/omrmakefiles/configure.mk.in b/omrmakefiles/configure.mk.in
+index 90943c9ae..40a3bdc56 100644
+--- a/omrmakefiles/configure.mk.in
++++ b/omrmakefiles/configure.mk.in
+@@ -186,7 +186,7 @@ GLOBAL_SHARED_LIBS = @GLOBAL_SHARED_LIBS@
+ GLOBAL_LIBPATH = @GLOBAL_LIBPATH@
+ GLOBAL_ARFLAGS = @GLOBAL_ARFLAGS@
+ 
+-OMR_OPTIMIZE := @OMR_OPTIMIZE@
++OMR_OPTIMIZE ?= @OMR_OPTIMIZE@
+ OMR_WARNINGS_AS_ERRORS := @OMR_WARNINGS_AS_ERRORS@
+ OMR_ENHANCED_WARNINGS := @OMR_ENHANCED_WARNINGS@
+ OMR_DEBUG := @OMR_DEBUG@
+-- 
+2.27.0
+

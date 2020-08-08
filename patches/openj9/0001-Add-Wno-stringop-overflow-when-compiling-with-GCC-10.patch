@@ -1,0 +1,47 @@
+From a4bc11d90a50836f2bb27730c1e8d2e9dde1e84b Mon Sep 17 00:00:00 2001
+From: Jan Vrany <jan.vrany@fit.cvut.cz>
+Date: Fri, 31 Jul 2020 17:57:44 +0000
+Subject: [PATCH] Add -Wno-stringop-overflow when compiling with GCC 10
+
+Starting with GCC 10, some code fails to compile with -Wall -Werror,
+failing after (possibly false) warning about possible string overflow.
+
+This commit add -Wno-stringop-overflow when compiling with GCC 10.
+
+Signed-off-by: Jan Vrany <jan.vrany@fit.cvut.cz>
+---
+ runtime/makelib/targets.mk.linux.inc.ftl | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/runtime/makelib/targets.mk.linux.inc.ftl b/runtime/makelib/targets.mk.linux.inc.ftl
+index 026b1f45d..18fac7be0 100644
+--- a/runtime/makelib/targets.mk.linux.inc.ftl
++++ b/runtime/makelib/targets.mk.linux.inc.ftl
+@@ -169,6 +169,14 @@ CXXFLAGS += $(UMA_OPTIMIZATION_CXXFLAGS)
+   endif
+ </#if>
+ 
++# If $(CC) doesn't accept the '-dumpversion' option, assume it's not GCC versions 5 or newer.
++GCC_MAJOR_VERSION := $(shell ($(CC) -dumpversion 2>/dev/null || echo 1) | cut -d. -f1)
++
++ifeq (1,$(shell expr $(GCC_MAJOR_VERSION) \>= 10))
++  CFLAGS += -Wno-stringop-overflow
++  CXXFLAGS += -Wno-stringop-overflow
++endif
++
+ <#--
+ OpenJ9 uses GNU89 inline semantics, but GCC versions 5 and newer default
+ to GNU11 inline semantics. The option '-fgnu89-inline' is appended to CFLAGS
+@@ -177,9 +185,6 @@ to allow compilation with newer GCC versions.
+ Reference - https://gcc.gnu.org/gcc-5/porting_to.html.
+ -->
+ <#if uma.spec.flags.env_gcc.enabled || !uma.spec.processor.ppc>
+-# If $(CC) doesn't accept the '-dumpversion' option, assume it's not GCC versions 5 or newer.
+-GCC_MAJOR_VERSION := $(shell ($(CC) -dumpversion 2>/dev/null || echo 1) | cut -d. -f1)
+-
+ ifeq (,$(findstring $(GCC_MAJOR_VERSION),1 2 3 4))
+   CFLAGS += -fgnu89-inline
+ endif
+-- 
+2.27.0
+
