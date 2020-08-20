@@ -54,12 +54,13 @@ fi
 
 # Setup toolchain
 if [ "${CONFIG}" == "slowdebug" ]; then
-        export UMA_DO_NOT_OPTIMIZE_CCODE="1"
-	export OMR_OPTIMIZE="0"
-        export VMDEBUG="-fno-inline -ggdb -O0"
-        export VMLINK="-ggdb -O0 -Xlinker --export-dynamic"
-        export enable_optimized=no
-        export enable_optimize=no
+	export UMA_DO_NOT_OPTIMIZE_CCODE=1
+	export CFLAGS="-O0 -ggdb"
+	export CXXFLAGS="-O0 -ggdb"
+	export VMDEBUG="-ggdb -fno-inline -O0"
+	export VMLINK="-ggdb -O0"
+	export enable_optimize=no
+	export enable_optimized=no
 fi
 
 export BUILD_CONFIG="${CONFIG}"
