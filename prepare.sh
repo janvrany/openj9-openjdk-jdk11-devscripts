@@ -1,13 +1,13 @@
 #!/bin/bash
 
-: ${openjdk_repo:='https://github.com/ibmruntimes/openj9-openjdk-jdk11.git'}
-: ${openjdk_branch:='openj9'}
+: ${openjdk_repo:='https://github.com/janvrany/openj9-openjdk-jdk11.git'}
+: ${openjdk_branch:='jv/riscv-devel'}
 
-: ${openj9_repo:='https://github.com/eclipse/openj9'}
-: ${openj9_branch:='master'}
+: ${openj9_repo:='https://github.com/janvrany/openj9'}
+: ${openj9_branch:='jv/riscv-devel'}
 
-: ${omr_repo:='https://github.com/eclipse/openj9-omr'}
-: ${omr_branch:='openj9'}
+: ${omr_repo:='https://github.com/janvrany/omr'}
+: ${omr_branch:='jv/riscv-devel'}
 
 : ${freemarker_version:='2.3.32'}
 : ${freemarker_url:="https://dlcdn.apache.org/freemarker/engine/${freemarker_version}/binaries/apache-freemarker-${freemarker_version}-bin.tar.gz"}
