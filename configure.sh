@@ -25,6 +25,7 @@ pushd openj9-openjdk-jdk11
 bash configure \
      --disable-warnings-as-errors \
      --disable-warnings-as-errors-openj9 \
+     --with-cmake \
      --with-build-jdk=$JAVA_HOME \
      --with-boot-jdk=$JAVA_HOME \
      --with-freemarker-jar="${HERE}/freemarker-2.3.8/lib/freemarker.jar" \
