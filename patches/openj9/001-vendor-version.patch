@@ -1,0 +1,14 @@
+diff --git a/runtime/include/vendor_version.h b/runtime/include/vendor_version.h
+index 7c812a27a..40422c762 100644
+--- a/runtime/include/vendor_version.h
++++ b/runtime/include/vendor_version.h
+@@ -52,4 +52,9 @@
+ #define JAVA_VM_VENDOR "Eclipse OpenJ9"
+ #define JAVA_VM_NAME "Eclipse OpenJ9 VM"
+ 
++#define JAVA_VENDOR "X"
++#define JAVA_VENDOR_URL "X"
++#define JAVA_NAME "X"
++
++
+ #endif     /* vendor_version_h */
