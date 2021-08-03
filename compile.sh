@@ -38,3 +38,5 @@ if test "${HOST}" != "${TARGET}"; then
 else
 	"${builddir}/images/jdk/bin/java" -version
 fi
+
+make        -C test
