@@ -28,6 +28,7 @@ bash configure \
      --with-build-jdk=$JAVA_HOME \
      --with-boot-jdk=$JAVA_HOME \
      --with-freemarker-jar="${HERE}/freemarker-2.3.8/lib/freemarker.jar" \
+     --with-noncompressedrefs \
      --with-extra-cflags='-O0 -ggdb' \
      --with-extra-cxxflags='-O0 -ggdb' \
      ${extra_configure_args} \
