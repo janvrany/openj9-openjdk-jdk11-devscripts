@@ -1,0 +1,22 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build J9 (RISC-V)",
+            "type": "shell",
+            "command": "make -C openj9-openjdk-jdk11/build/linux-riscv64-normal-server-slowdebug/vm",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Build JDK (RISC-V)",            
+            "type": "shell",
+            "command": "./compile.sh -j 4 --target riscv64-linux-gnu",            
+            "group": "build"            
+        }
+    ]
+}

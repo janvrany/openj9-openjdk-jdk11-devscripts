@@ -1,0 +1,13 @@
+{
+    "search.useIgnoreFiles": false,
+    "search.exclude": {
+        "**/build": true
+    },
+    "C_Cpp.errorSquiggles": "Enabled",
+    "files.associations": {
+        "*.inc": "cpp",
+        "*.enum": "cpp",
+        "cstddef": "cpp"
+    },
+
+}
