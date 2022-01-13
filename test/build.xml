@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="openj9-openjdk-jdk11-devscripts" default="build" basedir=".">
+    <path id="java.class.path">
+        <pathelement path="build/classes"/>
+        <fileset dir="build/libs" includes="*.jar" />
+    </path>
+
+    <target name="build" description="clean build" depends="clean, test" />
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="build/classes"/>
+        <mkdir dir="build/libs"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <copy file="junit-platform-console-standalone-1.8.2.jar" tofile="build/libs/junit.jar"/>
+        <javac destdir="build/classes" classpathref="java.class.path" srcdir="src" includeantruntime="false"/>
+    </target>
+
+    <target name="test" depends="compile">
+        <java classname="Runner" classpathref="java.class.path" failonerror="yes" fork="yes"/>
+        <echo>
+        To run individual test, for example MinimalTest.testMeaningOfTheWorld():
+
+        java -cp build/classes:build/libs/junit.jar MinimalTest testMeaningOfTheWorld
+        </echo>
+    </target>
+
+</project>

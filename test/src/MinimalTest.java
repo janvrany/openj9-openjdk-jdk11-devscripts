@@ -1,75 +1,22 @@
-import java.util.Set;
-import java.util.HashSet;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import org.junit.jupiter.api.Test;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-abstract class TestHarness {
-	
-	@Retention(RUNTIME)
-	@Target(METHOD)
-	public @interface Test {
-	}
-	
-	public void assertTrue(boolean b, String message) {
-		if (!b) {
-			throw new RuntimeException(message);
-		}
-	}
-	
-	public void assertTrue(boolean b) {
-		assertTrue(b, "Assertion failed!");
-	}
-	
-	public void run(String[] toRun) {
-		run(Set.of(toRun));
-	}
-	
-	public void run(Set<String> toRun) {
-		Set<Method> all = new HashSet<>();
-		for (Method m : this.getClass().getMethods()) {			
-			if (m.getAnnotation(Test.class) != null) {
-				if (toRun.isEmpty() || toRun.contains(m.getName())) {
-					all.add(m);
-				}				
-			}
-		}		
-		for (Method m : all) {
-			run(m);
-		}
-	}
-	
-	public void run(Method m) {		
-		try {
-			if (m.getAnnotation(Test.class) != null) {
-				run(m, Test.class);
-			}
-			System.out.println("PASS: " + this.getClass().getName() + "# " + m.getName());
-		} catch (InvocationTargetException e) {
-			e.getCause().printStackTrace();
-			System.out.println("FAIL: " + this.getClass().getName() + "# " + m.getName());
-		} catch (IllegalAccessException | IllegalArgumentException e) {			
-			e.printStackTrace();
-			System.out.println("FAIL: " + this.getClass().getName() + "# " + m.getName());
-		}
-	}
-	
-	private void run(Method m, Class<Test> annotation) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {		
-		m.invoke(this);
-	}
-}
-
-
-public class MinimalTest extends TestHarness {
+public class MinimalTest {
 	Object a;
 	int    i;
 	
+	
 	public int jitMeaningOfTheWorld() {
+		return 42;
+	}
+	
+	public int intMeaningOfTheWorld() {
+		return 42;
+	}
+	
+	public static int staticOfTheWorld() {
 		return 42;
 	}
 	
@@ -112,18 +59,74 @@ public class MinimalTest extends TestHarness {
 	int jitGetI() {
 		return i;
 	}
-	
+		
 	@Test
 	public void testGetI() {
 		i = 42;
 		assertTrue(jitGetI() == 42);
 		i = 0;
 		assertTrue(jitGetI() == 0);
-
 	}
 	
+	int jitInvokevirtualI_1() {
+		return intMeaningOfTheWorld();
+	}
+	
+	@Test
+	public void testInvokevirtualI_1() {
+		assertTrue(jitInvokevirtualI_1() == 42);
+	}
+
+	int jitInvokestaticI_1() {
+		return staticOfTheWorld();
+	}
+	
+	@Test
+	public void testInvokestaticI_1() {
+		staticOfTheWorld(); // force it to resolve;
+		assertTrue(jitInvokestaticI_1() == 42);
+	}
+	
+	
+	public int int2jitFactorial(int i) {
+		if (i == 0) {
+			return 1;
+		} else {
+			return jit2intFactorial(i - 1) * i;
+		}
+	}
+	
+	
+	public int jit2intFactorial(int i) {
+		if (i == 0) {
+			return 1;
+		} else {
+			return int2jitFactorial(i - 1) * i;
+		}
+	}
+	
+	@Test
+	public void testFactorial() {
+		int2jitFactorial(1); // force it to resolve
+		assertTrue(jit2intFactorial(5) == 120);
+	}
+
+	public int jit2jitFactorial(int i) {
+		if (i == 0) {
+			return 1;
+		} else {
+			return jit2jitFactorial(i - 1) * i;
+		}
+	}
+
+	@Test
+	public void testFactorial2() {
+		jit2jitFactorial(1); // force it to resolve
+		assertTrue(jit2jitFactorial(5) == 120);
+	}
+
 	public static void main(String[] args) {
-		(new MinimalTest()).run(args);
+		Runner.run(MinimalTest.class, args);
 	}
 
 }
