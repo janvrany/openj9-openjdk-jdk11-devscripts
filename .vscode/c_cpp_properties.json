@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/riscv64-linux-gnu-g++",
+            "cStandard": "c17",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "linux-gcc-x64",
+            "compileCommands": "${workspaceFolder}/openj9-openjdk-jdk11/build/linux-riscv64-normal-server-slowdebug/vm/compile_commands.json"            
+        }
+    ],
+    "version": 4
+}
