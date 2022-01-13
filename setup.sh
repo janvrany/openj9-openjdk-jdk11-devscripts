@@ -27,7 +27,7 @@ while (( "$#" )); do
   esac
 done
 
-eval set -- "${_params}"
+eval set -- ${_params}
 
 # Sanity checks
 if test "${TARGET}" != "x86_64-linux-gnu" -a "${TARGET}" != "riscv64-linux-gnu"; then

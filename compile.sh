@@ -6,7 +6,24 @@ HERE=$(realpath $(dirname $0))
 
 . "${HERE}/setup.sh"
 
-make JOBS=1 -C openj9-openjdk-jdk11 all
+JOBS=4
+_params=
+while (( "$#" )); do
+  case "$1" in
+    -j)
+      JOBS=$2
+      shift
+      ;;
+    *) # preserve positional arguments
+      _params="${_params} $1"
+      shift
+      ;;
+  esac
+done
+
+eval set -- ${_params}
+
+make JOBS=$JOBS -C openj9-openjdk-jdk11 all
 
 arch="${TARGET%%-*}"
 builddir="${HERE}/openj9-openjdk-jdk11/build/$(ls "${HERE}/openj9-openjdk-jdk11/build" | grep "linux-${arch}-*")"
