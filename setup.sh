@@ -9,7 +9,7 @@ _params=""
 while (( "$#" )); do
   case "$1" in
     --debug)
-      CONFIG=debug
+      CONFIG=slowdebug
       shift
       ;;
     --release)
