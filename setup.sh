@@ -52,15 +52,25 @@ if test "${HOST}" != "${TARGET}" -a "${TARGET}" == "riscv64-linux-gnu"; then
 	fi
 fi
 
+CFLAGS="-gdwarf-4"
+CXXFLAGS="-gdwarf-4"
+VMDEBUG="-gdwarf-4"
+VMLINK="-gdwarf-4"
+
+
 # Setup toolchain
 if [ "${CONFIG}" == "slowdebug" ]; then
 	export UMA_DO_NOT_OPTIMIZE_CCODE=1
-	export CFLAGS="-O0 -ggdb"
-	export CXXFLAGS="-O0 -ggdb"
-	export VMDEBUG="-ggdb -fno-inline -O0"
-	export VMLINK="-ggdb -O0"
+	CFLAGS="${CFLAGS} -O0"
+	CXXFLAGS="${CXXFLAGS} -O0"
+	VMDEBUG="${VMDEBUG} -fno-inline -O0"
+	VMLINK="${VMLINK} -O0"
 	export enable_optimize=no
 	export enable_optimized=no
 fi
 
+export CFLAGS
+export CXXFLAGS
+export VMDEBUG
+export VMLINK
 export BUILD_CONFIG="${CONFIG}"

@@ -15,7 +15,7 @@ if [[ "${HOST}" != "${TARGET}" ]]; then
                sysroot="/opt/cross/riscv64"
           else
                echo "ERROR: no cross-compilation sysroot found!"
-          fi		
+          fi
           extra_configure_args="${extra_configure_args} --with-sysroot=$sysroot"
         fi
 fi
@@ -29,8 +29,8 @@ bash configure \
      --with-boot-jdk=$JAVA_HOME \
      --with-freemarker-jar="${HERE}/freemarker-2.3.8/lib/freemarker.jar" \
      --with-noncompressedrefs \
-     --with-extra-cflags='-O0 -ggdb' \
-     --with-extra-cxxflags='-O0 -ggdb' \
+     --with-extra-cflags="${CFLAGS}" \
+     --with-extra-cxxflags="${CXXFLAGS}" \
      ${extra_configure_args} \
      --with-debug-level=${CONFIG}
 popd
