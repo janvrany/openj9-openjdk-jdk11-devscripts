@@ -27,7 +27,7 @@ bash configure \
      --disable-warnings-as-errors-openj9 \
      --with-build-jdk=$JAVA_HOME \
      --with-boot-jdk=$JAVA_HOME \
-     --with-freemarker-jar="${HERE}/freemarker-2.3.8/lib/freemarker.jar" \
+     --with-freemarker-jar="$(ls ${HERE}/apache-freemarker-*-bin/freemarker.jar | tail -1)" \
      --with-noncompressedrefs \
      --with-extra-cflags="${CFLAGS}" \
      --with-extra-cxxflags="${CXXFLAGS}" \
