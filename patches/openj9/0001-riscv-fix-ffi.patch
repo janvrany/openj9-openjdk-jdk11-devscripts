@@ -1,0 +1,31 @@
+diff --git a/runtime/libffi/riscv/ffi.c b/runtime/libffi/riscv/ffi.c
+index 5ffd2051f..a78d2b4a8 100644
+--- a/runtime/libffi/riscv/ffi.c
++++ b/runtime/libffi/riscv/ffi.c
+@@ -195,17 +195,17 @@ static void unmarshal_atom(call_builder *cb, int type, void *data) {
+     }
+ 
+     switch (type) {
+-        case FFI_TYPE_UINT8: *(uint8_t *)data = value; break;
+-        case FFI_TYPE_SINT8: *(uint8_t *)data = value; break;
+-        case FFI_TYPE_UINT16: *(uint16_t *)data = value; break;
+-        case FFI_TYPE_SINT16: *(uint16_t *)data = value; break;
+-        case FFI_TYPE_UINT32: *(uint32_t *)data = value; break;
+-        case FFI_TYPE_SINT32: *(uint32_t *)data = value; break;
++        case FFI_TYPE_UINT8:  *(ffi_arg *) data = ( uint8_t) value;
++        case FFI_TYPE_SINT8:  *(ffi_arg *) data = (  int8_t) value;
++        case FFI_TYPE_UINT16: *(ffi_arg *) data = (uint16_t) value;
++        case FFI_TYPE_SINT16: *(ffi_arg *) data = ( int16_t) value;
++        case FFI_TYPE_UINT32: *(ffi_arg *) data = (uint32_t) value;
++        case FFI_TYPE_SINT32: *(ffi_arg *) data = ( int32_t) value;
+ #if __SIZEOF_POINTER__ == 8
+-        case FFI_TYPE_UINT64: *(uint64_t *)data = value; break;
+-        case FFI_TYPE_SINT64: *(uint64_t *)data = value; break;
++        case FFI_TYPE_UINT64: *(ffi_arg *) data = (uint64_t) value;
++        case FFI_TYPE_SINT64: *(ffi_arg *) data = ( int64_t) value;
+ #endif
+-        case FFI_TYPE_POINTER: *(size_t *)data = value; break;
++        case FFI_TYPE_POINTER: *(ffi_arg *) data= ( size_t) value;
+         default: FFI_ASSERT(0); break;
+     }
+ }
