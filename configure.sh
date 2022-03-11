@@ -7,17 +7,7 @@ HERE=$(realpath $(dirname $0))
 extra_configure_args=""
 
 if [[ "${HOST}" != "${TARGET}" ]]; then
-	extra_configure_args="${extra_configure_args} --disable-ddr --openjdk-target=$TARGET"
- 	if [[ "${TARGET}" == "riscv64-linux-gnu" ]]; then
-          if [ -d "/opt/riscv/sysroot" ]; then
-               sysroot="/opt/riscv/sysroot"
-          elif [ -d "/opt/cross/riscv64" ]; then
-               sysroot="/opt/cross/riscv64"
-          else
-               echo "ERROR: no cross-compilation sysroot found!"
-          fi
-          extra_configure_args="${extra_configure_args} --with-sysroot=$sysroot"
-        fi
+	extra_configure_args="${extra_configure_args} --disable-ddr --openjdk-target=$TARGET  --with-sysroot=${SYSROOT}"
 fi
 
 pushd openj9-openjdk-jdk11

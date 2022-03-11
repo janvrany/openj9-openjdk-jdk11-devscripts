@@ -50,6 +50,15 @@ if test "${HOST}" != "${TARGET}" -a "${TARGET}" == "riscv64-linux-gnu"; then
 	if [[ -f "/usr/bin/riscv64-linux-gnu-g++" ]]; then
 		export RISCV_TOOLCHAIN_TYPE=install
 	fi
+
+	if [ -d "/opt/riscv/sysroot" ]; then
+		SYSROOT="/opt/riscv/sysroot"
+	elif [ -d "/opt/cross/riscv64" ]; then
+		SYSROOT="/opt/cross/riscv64"
+	else
+		echo "ERROR: no cross-compilation sysroot found!"
+		exit 2
+	fi
 fi
 
 CFLAGS="-gdwarf-4"
