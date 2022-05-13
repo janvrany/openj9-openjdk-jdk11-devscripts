@@ -1,5 +1,6 @@
 *freemarker*
 openj9-openjdk-jdk11
+!patches/openj9-openjdk-jdk11
 *.trc
 *.txt
 *.dmp
