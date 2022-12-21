@@ -28,6 +28,14 @@ make JOBS=$JOBS -C openj9-openjdk-jdk11 all
 arch="${TARGET%%-*}"
 builddir="${HERE}/openj9-openjdk-jdk11/build/$(ls "${HERE}/openj9-openjdk-jdk11/build" | grep "linux-${arch}-*")"
 
+if which gdb-add-index > /dev/null; then
+  for library in $(find "$builddir/images/jdk" -name '*.so'); do
+    echo "Creating GDB index in $(basename $library)"
+    gdb-add-index $library &> /dev/null
+  done
+  echo "Done!"
+fi
+
 if test "${HOST}" != "${TARGET}"; then
 	qemu=$(type -P qemu-${arch}-static)
 	if [[ -z "${qemu}" ]]; then
