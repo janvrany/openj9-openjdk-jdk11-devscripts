@@ -47,4 +47,6 @@ else
 	"${builddir}/images/jdk/bin/java" -version
 fi
 
-make        -C test
+make -C test "O=${builddir}/images/jdk/test" "QEMU=${qemu}" "SYSROOT=${SYSROOT}"
+
+fi
