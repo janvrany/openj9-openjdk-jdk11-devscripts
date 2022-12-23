@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="openj9-openjdk-jdk11-devscripts" default="build" basedir=".">
+    <property name="build.dir" value="build" />
+    <property name="qemu.path" value="" />
+    <property name="qemu.sysroot" value="" />
+
     <path id="java.class.path">
-        <pathelement path="build/classes"/>
-        <fileset dir="build/libs" includes="*.jar" />
+        <pathelement path="${build.dir}/classes"/>
+        <fileset dir="${build.dir}/libs" includes="*.jar" />
     </path>
 
     <target name="build" description="clean build" depends="clean, test" />
@@ -12,22 +16,57 @@
     </target>
 
     <target name="init">
-        <mkdir dir="build/classes"/>
-        <mkdir dir="build/libs"/>
+        <mkdir dir="${build.dir}/classes"/>
+        <mkdir dir="${build.dir}/libs"/>
     </target>
 
     <target name="compile" depends="init">
-        <copy file="junit-platform-console-standalone-1.8.2.jar" tofile="build/libs/junit.jar"/>
-        <javac destdir="build/classes" classpathref="java.class.path" srcdir="src" includeantruntime="false" debug="true"/>
+        <copy file="junit-platform-console-standalone-1.8.2.jar" tofile="${build.dir}/libs/junit.jar"/>
+        <javac destdir="${build.dir}/classes" classpathref="java.class.path" srcdir="src" includeantruntime="false" debug="true"/>
     </target>
 
-    <target name="test" depends="compile">
+    <target name="set-use-qemu">
+        <condition property="use.qemu">
+            <not>
+                <and>
+                    <equals arg1="${qemu.path}" arg2=""/>
+                    <equals arg1="${qemu.sysroot}" arg2=""/>
+                </and>
+            </not>
+        </condition>
+    </target>
+
+    <target name="test-native" depends="compile, set-use-qemu">
+        <echo>
+        Running tests native
+        </echo>
         <java classname="Runner" classpathref="java.class.path" failonerror="yes" fork="yes"/>
         <echo>
         To run individual test, for example MinimalTest.testMeaningOfTheWorld():
 
-        java -cp build/classes:build/libs/junit.jar MinimalTest testMeaningOfTheWorld
+        java -cp ${build.dir}/classes:${build.dir}/libs/junit.jar MinimalTest testMeaningOfTheWorld
         </echo>
     </target>
+
+    <target name="test-built-cross" depends="compile, set-use-qemu" if="${use.qemu}">
+        <echo>
+        Running tests using compiled JDK
+        </echo>
+        <exec executable="${qemu.path}">
+            <arg value="-L"/>
+            <arg value="${qemu.sysroot}"/>
+            <arg value="${build.dir}/../bin/java"/>
+            <arg value="-cp"/>
+            <arg value="${build.dir}/classes:${build.dir}/libs/junit.jar"/>
+            <arg value="MinimalTest"/>
+        </exec>
+        <echo>
+        To run individual test, for example MinimalTest.testMeaningOfTheWorld():
+
+        ${qemu.path} -L ${qemu.sysroot} ${build.dir}/../bin/java -cp ${build.dir}/classes:${build.dir}/libs/junit.jar MinimalTest testMeaningOfTheWorld
+        </echo>
+    </target>
+
+    <target name="test" depends="test-native, test-built-cross"/>
 
 </project>
