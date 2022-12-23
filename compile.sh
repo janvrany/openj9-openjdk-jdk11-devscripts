@@ -6,7 +6,7 @@ HERE=$(realpath $(dirname $0))
 
 . "${HERE}/setup.sh"
 
-JOBS=4
+JOBS=$(nproc)
 _params=
 while (( "$#" )); do
   case "$1" in
