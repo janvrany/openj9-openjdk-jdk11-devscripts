@@ -77,14 +77,32 @@ public class MinimalTest {
 		assertTrue(jitInvokevirtualI_1() == 42);
 	}
 
-	int jitInvokestaticI_1() {
-		return staticOfTheWorld();
+	static int intInvokestaticCallee1(int x) {
+		return x + 1;
 	}
-	
+
+	static int jitInvokestaticCallee1(int x) {
+		return x + 10;
+	}
+
+	int jit2intInvokestatic1(int x) {
+		return intInvokestaticCallee1(x + 2);
+	}
+
+	int jit2jitInvokestatic1(int x) {
+		return jitInvokestaticCallee1(x + 20);
+	}
+
 	@Test
-	public void testInvokestaticI_1() {
-		staticOfTheWorld(); // force it to resolve;
-		assertTrue(jitInvokestaticI_1() == 42);
+	public void testInvokestatice1_jit2int() {
+		intInvokestaticCallee1(0); // force it to resolve;
+		assertTrue(jit2intInvokestatic1(42) == 45);
+	}
+
+	@Test
+	public void testInvokestatice1_jit2jit() {
+		jitInvokestaticCallee1(0); // force it to resolve;
+		assertTrue(jit2jitInvokestatic1(42) == 72);
 	}
 	
 	
@@ -121,7 +139,6 @@ public class MinimalTest {
 
 	@Test
 	public void testFactorial2() {
-		jit2jitFactorial(1); // force it to resolve
 		assertTrue(jit2jitFactorial(5) == 120);
 	}
 
