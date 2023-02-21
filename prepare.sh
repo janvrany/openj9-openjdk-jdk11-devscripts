@@ -9,7 +9,7 @@
 : ${omr_repo:='https://github.com/eclipse/openj9-omr'}
 : ${omr_branch:='openj9'}
 
-: ${freemarker_version:='2.3.31'}
+: ${freemarker_version:='2.3.32'}
 : ${freemarker_url:="https://dlcdn.apache.org/freemarker/engine/${freemarker_version}/binaries/apache-freemarker-${freemarker_version}-bin.tar.gz"}
 
 if [ ! -d openj9-openjdk-jdk11 ]; then
