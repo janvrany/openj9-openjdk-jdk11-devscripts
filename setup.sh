@@ -41,7 +41,9 @@ if test "${CONFIG}" != "slowdebug" -a "${CONFIG}" != "release"; then
 fi
 
 # Setup build JDK
-if [ -z "${JAVA_HOME}" ]; then
+if [ -x "jdk/bin/javac" ]; then
+	export JAVA_HOME="$(pwd)/jdk"
+elif [ -z "${JAVA_HOME}" ]; then
 	export JAVA_HOME=$(echo /usr/lib/jvm/java-11-openjdk-*)
 fi
 export PATH=$JAVA_HOME/bin:$PATH
@@ -61,10 +63,22 @@ if test "${HOST}" != "${TARGET}" -a "${TARGET}" == "riscv64-linux-gnu"; then
 	fi
 fi
 
+if test "${HOST}" == "${TARGET}"; then
+	gcc=gcc
+else
+	gcc="${TARGET}-gcc"
+fi
+gcc_ver=$($gcc -dumpversion)
+
 CFLAGS="-gdwarf-4"
-CXXFLAGS="-gdwarf-4"
-VMDEBUG="-gdwarf-4"
-VMLINK="-gdwarf-4"
+
+if expr $gcc_ver \>= 12; then
+	CFLAGS="$CFLAGS -Wno-error=use-after-free"
+fi
+
+CXXFLAGS="$CFLAGS"
+VMDEBUG="$CFLAGS"
+VMLINK="$CFLAGS"
 
 
 # Setup toolchain
