@@ -76,6 +76,10 @@ if expr $gcc_ver \>= 12; then
 	CFLAGS="$CFLAGS -Wno-error=use-after-free"
 fi
 
+if expr $gcc_ver \>= 13; then
+	CFLAGS="$CFLAGS -Wno-error=dangling-pointer= -Wno-error=address -Wno-error=maybe-uninitialized"
+fi
+
 CXXFLAGS="$CFLAGS"
 VMDEBUG="$CFLAGS"
 VMLINK="$CFLAGS"
