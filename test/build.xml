@@ -3,6 +3,7 @@
     <property name="build.dir" value="build" />
     <property name="qemu.path" value="" />
     <property name="qemu.sysroot" value="" />
+    <property name="java.options" value="-Xjit:verbose,disableInlining,count=0,limit={MinimalTest.jit*},log=trace.txt"/>
 
     <path id="java.class.path">
         <pathelement path="${build.dir}/classes"/>
@@ -56,6 +57,7 @@
             <arg value="-L"/>
             <arg value="${qemu.sysroot}"/>
             <arg value="${build.dir}/../bin/java"/>
+            <arg value="${java.options}"/>
             <arg value="-cp"/>
             <arg value="${build.dir}/classes:${build.dir}/libs/junit.jar"/>
             <arg value="MinimalTest"/>
@@ -63,7 +65,7 @@
         <echo>
         To run individual test, for example MinimalTest.testMeaningOfTheWorld():
 
-        ${qemu.path} -L ${qemu.sysroot} ${build.dir}/../bin/java -cp ${build.dir}/classes:${build.dir}/libs/junit.jar MinimalTest testMeaningOfTheWorld
+        ${qemu.path} -L ${qemu.sysroot} ${build.dir}/../bin/java ${java.options} -cp ${build.dir}/classes:${build.dir}/libs/junit.jar MinimalTest testMeaningOfTheWorld
         </echo>
     </target>
 
