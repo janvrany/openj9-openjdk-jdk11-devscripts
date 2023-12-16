@@ -48,5 +48,3 @@ else
 fi
 
 make -C test "O=${builddir}/images/jdk/test" "QEMU=${qemu}" "SYSROOT=${SYSROOT}"
-
-fi
