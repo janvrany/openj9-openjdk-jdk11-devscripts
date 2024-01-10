@@ -35,8 +35,10 @@ case "${TARGET}" in
 			;;
 		riscv64-linux-gnu)
 			;;
+		aarch64-linux-gnu)
+			;;
 		*)
-			echo "Error: only 'x86_64-linux-gnu' and 'riscv64-linux-gnu' targets are supported (not '${TARGET}')"
+			echo "Error: only 'x86_64-linux-gnu', 'riscv64-linux-gnu' and 'aarch64-linux-gnu' targets are supported (not '${TARGET}')"
 			exit 2
 		;;
 esac
@@ -56,7 +58,11 @@ export PATH=$JAVA_HOME/bin:$PATH
 
 if test "${HOST}" != "${TARGET}" ; then
 	case "${TARGET}" in
+		x86_64-linux-gnu)
+			CONF=linux-x86_64-normal-server-slowdebug
+			;;
 		riscv64-linux-gnu)
+			CONF=linux-riscv64-normal-server-slowdebug
 			if [[ -f "/usr/bin/riscv64-linux-gnu-g++" ]]; then
 				export RISCV_TOOLCHAIN_TYPE=install
 			fi
@@ -68,6 +74,20 @@ if test "${HOST}" != "${TARGET}" ; then
 	elif [ -d "/usr/gnemul/qemu-riscv64" ]; then
 		SYSROOT="/usr/gnemul/qemu-riscv64"
 			else
+				echo "ERROR: no cross-compilation sysroot found!"
+				exit 2
+			fi
+			;;
+		aarch64-linux-gnu)
+			CONF=linux-aarch64-normal-server-slowdebug
+			SYSROOT=
+			for dir in "/opt/aarch64/sysroot" "/opt/cross/aarch64" "$HOME/Projects/debian-for-toys/arm64/build/root"; do
+				if [ -d "$dir" ]; then
+					SYSROOT="$dir"
+					break
+				fi
+			done
+			if [ -z "$SYSROOT" ]; then
 				echo "ERROR: no cross-compilation sysroot found!"
 				exit 2
 			fi
@@ -86,6 +106,10 @@ CFLAGS="-gdwarf-4"
 
 if expr $gcc_ver \>= 12; then
 	CFLAGS="$CFLAGS -Wno-error=use-after-free -Wno-error=dangling-pointer= -Wno-error=address -Wno-error=maybe-uninitialized"
+fi
+
+if expr $gcc_ver \>= 13; then
+	CFLAGS="$CFLAGS -Wno-error=dangling-pointer= -Wno-error=address -Wno-error=maybe-uninitialized -Wno-error=narrowing"
 fi
 
 CXXFLAGS="$CFLAGS"
