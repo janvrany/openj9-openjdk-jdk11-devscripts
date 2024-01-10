@@ -30,10 +30,16 @@ done
 eval set -- ${_params}
 
 # Sanity checks
-if test "${TARGET}" != "x86_64-linux-gnu" -a "${TARGET}" != "riscv64-linux-gnu"; then
-	echo "Error: only 'x86_64-linux-gnu' and 'riscv64-linux-gnu' targets are supported (not '${TARGET}')"
-	exit 2
-fi
+case "${TARGET}" in
+		x86_64-linux-gnu)
+			;;
+		riscv64-linux-gnu)
+			;;
+		*)
+			echo "Error: only 'x86_64-linux-gnu' and 'riscv64-linux-gnu' targets are supported (not '${TARGET}')"
+			exit 2
+		;;
+esac
 
 if test "${CONFIG}" != "slowdebug" -a "${CONFIG}" != "release"; then
 	echo "Error: only 'slowdebug' and 'release' configs are supported (not '${CONFIG}')"
@@ -48,21 +54,25 @@ elif [ -z "${JAVA_HOME}" ]; then
 fi
 export PATH=$JAVA_HOME/bin:$PATH
 
-if test "${HOST}" != "${TARGET}" -a "${TARGET}" == "riscv64-linux-gnu"; then
-	if [[ -f "/usr/bin/riscv64-linux-gnu-g++" ]]; then
-		export RISCV_TOOLCHAIN_TYPE=install
-	fi
+if test "${HOST}" != "${TARGET}" ; then
+	case "${TARGET}" in
+		riscv64-linux-gnu)
+			if [[ -f "/usr/bin/riscv64-linux-gnu-g++" ]]; then
+				export RISCV_TOOLCHAIN_TYPE=install
+			fi
 
-	if [ -d "/opt/riscv/sysroot" ]; then
-		SYSROOT="/opt/riscv/sysroot"
-	elif [ -d "/opt/cross/riscv64" ]; then
-		SYSROOT="/opt/cross/riscv64"
+			if [ -d "/opt/riscv/sysroot" ]; then
+				SYSROOT="/opt/riscv/sysroot"
+			elif [ -d "/opt/cross/riscv64" ]; then
+				SYSROOT="/opt/cross/riscv64"
 	elif [ -d "/usr/gnemul/qemu-riscv64" ]; then
 		SYSROOT="/usr/gnemul/qemu-riscv64"
-	else
-		echo "ERROR: no cross-compilation sysroot found!"
-		exit 2
-	fi
+			else
+				echo "ERROR: no cross-compilation sysroot found!"
+				exit 2
+			fi
+			;;
+	esac
 fi
 
 if test "${HOST}" == "${TARGET}"; then
