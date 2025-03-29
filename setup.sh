@@ -57,6 +57,8 @@ if test "${HOST}" != "${TARGET}" -a "${TARGET}" == "riscv64-linux-gnu"; then
 		SYSROOT="/opt/riscv/sysroot"
 	elif [ -d "/opt/cross/riscv64" ]; then
 		SYSROOT="/opt/cross/riscv64"
+	elif [ -d "/usr/gnemul/qemu-riscv64" ]; then
+		SYSROOT="/usr/gnemul/qemu-riscv64"
 	else
 		echo "ERROR: no cross-compilation sysroot found!"
 		exit 2
