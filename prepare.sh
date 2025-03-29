@@ -9,8 +9,8 @@
 : ${omr_repo:='https://github.com/eclipse/openj9-omr'}
 : ${omr_branch:='openj9'}
 
-: ${freemarker_version:='2.3.32'}
-: ${freemarker_url:="https://dlcdn.apache.org/freemarker/engine/${freemarker_version}/binaries/apache-freemarker-${freemarker_version}-bin.tar.gz"}
+: ${freemarker_version:='2.3.34'}
+: ${freemarker_url:="https://dlcdn.apache.org/freemarker/engine/${freemarker_version}/binaries/apache-freemarker-bin-${freemarker_version}.tgz"}
 
 if [ ! -d openj9-openjdk-jdk11 ]; then
 	git clone --branch "$openjdk_branch" "$openjdk_repo" openj9-openjdk-jdk11        --depth 1
@@ -30,7 +30,8 @@ else
 	git -C openj9-openjdk-jdk11/openj9 pull
 fi
 
-if [ ! -f "apache-freemarker-${freemarker_version}-bin/freemarker.jar" ]; then
-       wget -O freemarker.tar.gz "${freemarker_url}"
-       tar -xf freemarker.tar.gz
+if [ ! -f "freemarker/freemarker.jar" ]; then
+	mkdir -p freemarker
+       wget -O freemarker/freemarker.tar.gz "${freemarker_url}"
+       tar -C freemarker -xf freemarker/freemarker.tar.gz
 fi

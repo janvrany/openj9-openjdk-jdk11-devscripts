@@ -18,7 +18,7 @@ bash configure \
      --with-cmake \
      --with-build-jdk=$JAVA_HOME \
      --with-boot-jdk=$JAVA_HOME \
-     --with-freemarker-jar="$(ls ${HERE}/apache-freemarker-*-bin/freemarker.jar | tail -1)" \
+     --with-freemarker-jar="${HERE}/freemarker/freemarker.jar" \
      --with-noncompressedrefs \
      --with-extra-cflags="${CFLAGS}" \
      --with-extra-cxxflags="${CXXFLAGS}" \
