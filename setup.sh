@@ -44,7 +44,11 @@ fi
 if [ -x "jdk/bin/javac" ]; then
 	export JAVA_HOME="$(pwd)/jdk"
 elif [ -z "${JAVA_HOME}" ]; then
-	export JAVA_HOME=$(echo /usr/lib/jvm/java-11-openjdk-*)
+	if [ -x "/opt/jdk-11/bin/javac" ]; then
+		export JAVA_HOME=/opt/jdk-11
+	else
+		export JAVA_HOME=$(echo /usr/lib/jvm/java-11-openjdk-*)
+	fi
 fi
 export PATH=$JAVA_HOME/bin:$PATH
 
