@@ -3,10 +3,10 @@
 : ${openjdk_repo:='https://github.com/ibmruntimes/openj9-openjdk-jdk11.git'}
 : ${openjdk_branch:='openj9'}
 
-: ${openj9_repo:='https://github.com/eclipse/openj9'}
-: ${openj9_branch:='master'}
+: ${openj9_repo:='https://github.com/eclipse-openj9/openj9'}
+: ${openj9_branch:='main'}
 
-: ${omr_repo:='https://github.com/eclipse/openj9-omr'}
+: ${omr_repo:='https://github.com/eclipse-openj9/openj9-omr'}
 : ${omr_branch:='openj9'}
 
 : ${freemarker_version:='2.3.35'}
